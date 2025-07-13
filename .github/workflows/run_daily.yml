@@ -1,0 +1,33 @@
+name: Run Daily E5 Renew Script
+
+on:
+  workflow_dispatch: # Cho phép chạy thủ công từ tab Actions
+  schedule:
+    # Chạy vào 7:00 sáng mỗi ngày theo giờ Việt Nam (tức 00:00 UTC)
+    - cron: '0 0 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # Sử dụng một máy chủ ảo Linux để chạy
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3 # Tải code từ repo về máy ảo
+
+      - name: Set up Python
+        uses: actions/setup-python@v4 # Cài đặt môi trường Python
+        with:
+          python-version: '3.10' # Phiên bản Python bạn muốn dùng
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests feedparser # Cài các thư viện cần thiết
+
+      - name: Run the Python script
+        env:
+          # Truyền các secret đã lưu vào làm biến môi trường cho script
+          TENANT_ID: ${{ secrets.TENANT_ID }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+        run: python e5-renew.py # THAY TÊN FILE SCRIPT CỦA BẠN
