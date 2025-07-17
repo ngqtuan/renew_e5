@@ -3,8 +3,9 @@ name: Run Daily E5 Renew Script
 on:
   workflow_dispatch: # Cho phép chạy thủ công từ tab Actions
   schedule:
-    # Chạy vào 7:00 sáng mỗi ngày theo giờ Việt Nam (tức 00:00 UTC)
-    - cron: '0 0 * * *'
+    # Chạy 2 lần/ngày vào 7:00 sáng và 7:00 tối theo giờ Việt Nam
+    # (tương ứng 00:00 UTC và 12:00 UTC)
+    - cron: '0 0,12 * * *'
 
 jobs:
   build:
